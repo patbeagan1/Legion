@@ -507,6 +507,8 @@ class ChanTest {
             legion.accept("123456789")
             legion.accept("1234567890")
             legion.accept("1234567890123456")
+
+            delay(10000)
         }
     }
 
