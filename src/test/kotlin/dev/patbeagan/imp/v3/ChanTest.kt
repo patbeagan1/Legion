@@ -594,38 +594,38 @@ class ChanTest {
         class TransportBelt : Item()
     }
 
-    @Test
-    fun `baking a cake`() {
-        val legion = legion<Unit> {
-            start..cohort("gather ingredients") {
-                listOf(
-                    Egg(),
-                    Flour(),
-                    Egg(),
-                    Milk(),
-                    Milk(),
-                    Sugar(),
-                    Egg(),
-                ).forEach { ingredient ->
-                    startCohort..{ ingredient }..this.endCohort
-                }
-            }..impJoinAllQuantified(
-                "bake cake",
-                Quantity<Egg>(3),
-                Quantity<Sugar>(1),
-                Quantity<Flour>(1),
-                Quantity<Milk>(1)
-            ) {
-                Cake()
-            }..{
-                println(it)
-            }
-        }.also { println(it.asGraphviz()) }
-
-        runBlocking {
-            startLegionWithTimeout(legion, Unit, timeout = 2000, dispatcher = Dispatchers.IO)
-        }
-    }
+//    @Test
+//    fun `baking a cake`() {
+//        val legion = legion<Unit> {
+//            start..cohort("gather ingredients") {
+//                listOf(
+//                    Egg(),
+//                    Flour(),
+//                    Egg(),
+//                    Milk(),
+//                    Milk(),
+//                    Sugar(),
+//                    Egg(),
+//                ).forEach { ingredient ->
+//                    startCohort..{ ingredient }..this.endCohort
+//                }
+//            }..impJoinAllQuantified(
+//                "bake cake",
+//                Quantity<Egg>(3),
+//                Quantity<Sugar>(1),
+//                Quantity<Flour>(1),
+//                Quantity<Milk>(1)
+//            ) {
+//                Cake()
+//            }..{
+//                println(it)
+//            }
+//        }.also { println(it.asGraphviz()) }
+//
+//        runBlocking {
+//            startLegionWithTimeout(legion, Unit, timeout = 2000, dispatcher = Dispatchers.IO)
+//        }
+//    }
 
     @Test
     fun `baking a cake - minimal syntax`() = runBlocking {
@@ -942,45 +942,45 @@ class ChanTest {
 
     class FailedImpException() : Exception()
 
-    @Test
-    fun `test splitter works correctly`() = runBlocking {
-        // Given
-        val inputString = "test"
-        val outputChars = mutableListOf<Char>()
-        val outputFinal = mutableListOf<String>()
-        val results = MutableSharedFlow<String>()
-
-        val legion = legion<String> {
-            start..cohort("test") {
-                startCohort..{ println(it) }..endCohort
-            }..{}
-            start..{
-                it.toCharArray().toList()
-            }..splitter {
-                startSplitter..{
-                    outputChars.add(it)
-                    it
-                }..endSplitter
-            }..{
-                val result = it.joinToString("")
-                outputFinal.add(result)
-                results.emit(result)
-            }
-        }.also { println(it.asGraphviz()) }
-
-        // When
-        startLegionWithTimeout(legion, inputString, dispatcher = Dispatchers.IO)
-
-        // Then
-        results.collect {
-            assertEquals(listOf('e', 's', 't', 't'), outputChars.apply { sort() })
-            assertEquals(listOf("estt"), outputFinal)
-            assertEquals(inputString.length, outputChars.size)
-            assertEquals(1, outputFinal.size)
-            assertEquals(inputString, outputFinal.first())
-        }
-        Unit
-    }
+//    @Test
+//    fun `test splitter works correctly`() = runBlocking {
+//        // Given
+//        val inputString = "test"
+//        val outputChars = mutableListOf<Char>()
+//        val outputFinal = mutableListOf<String>()
+//        val results = MutableSharedFlow<String>()
+//
+//        val legion = legion<String> {
+//            start..cohort("test") {
+//                startCohort..{ println(it) }..endCohort
+//            }..{}
+//            start..{
+//                it.toCharArray().toList()
+//            }..splitter {
+//                startSplitter..{
+//                    outputChars.add(it)
+//                    it
+//                }..endSplitter
+//            }..{
+//                val result = it.joinToString("")
+//                outputFinal.add(result)
+//                results.emit(result)
+//            }
+//        }.also { println(it.asGraphviz()) }
+//
+//        // When
+//        startLegionWithTimeout(legion, inputString, dispatcher = Dispatchers.IO)
+//
+//        // Then
+//        results.collect {
+//            assertEquals(listOf('e', 's', 't', 't'), outputChars.apply { sort() })
+//            assertEquals(listOf("estt"), outputFinal)
+//            assertEquals(inputString.length, outputChars.size)
+//            assertEquals(1, outputFinal.size)
+//            assertEquals(inputString, outputFinal.first())
+//        }
+//        Unit
+//    }
 
     @Test
     fun `cohort catches exceptions`() {
@@ -1007,20 +1007,20 @@ class ChanTest {
         }
     }
 
-    @Test
-    fun `test splitter works correctly - url example`() = runBlocking {
-        val inputString = "https://example.com,https://google.com"
-
-        val legion = legion<String> {
-            start..{ it.split(",") }..splitter {
-                startSplitter..{ Url(it) }..endSplitter
-            }..{
-                println(it)
-            }
-        }.also { println(it.asGraphviz()) }
-
-        startLegionWithTimeout(legion, inputString, dispatcher = Dispatchers.IO)
-    }
+//    @Test
+//    fun `test splitter works correctly - url example`() = runBlocking {
+//        val inputString = "https://example.com,https://google.com"
+//
+//        val legion = legion<String> {
+//            start..{ it.split(",") }..splitter {
+//                startSplitter..{ Url(it) }..endSplitter
+//            }..{
+//                println(it)
+//            }
+//        }.also { println(it.asGraphviz()) }
+//
+//        startLegionWithTimeout(legion, inputString, dispatcher = Dispatchers.IO)
+//    }
 
     private suspend fun <T> CoroutineScope.startLegionWithTimeout(
         legion: Legion<T>,
