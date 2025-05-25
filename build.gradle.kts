@@ -1,11 +1,12 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
     val kotlinVersion = "2.0.0"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
-    application
+    id("com.vanniktech.maven.publish") version "0.32.0"
 }
 
 group = "dev.patbeagan1"
@@ -13,6 +14,48 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+}
+
+kotlin {
+    jvmToolchain(21)
+}
+
+mavenPublishing {
+//    publishToMavenCentral(SonatypeHost.DEFAULT)
+    // or when publishing to https://s01.oss.sonatype.org
+//    publishToMavenCentral(SonatypeHost.S01)
+    // or when publishing to https://central.sonatype.com/
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    signAllPublications()
+
+    coordinates("io.github.patbeagan1", "legion", version as String?)
+
+    pom {
+        name.set("Legion")
+        description.set("Asynchronous typesafe task graph")
+        inceptionYear.set("2025")
+        url.set("https://github.com/patbeagan1/Legion/")
+        licenses {
+            license {
+                name.set("MIT")
+//                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+//                distribution.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+        developers {
+            developer {
+                id.set("patbeagan1")
+                name.set("patbeagan1")
+                url.set("https://github.com/patbeagan1/")
+            }
+        }
+        scm {
+            url.set("https://github.com/patbeagan1/Legion/")
+            connection.set("scm:git:git://github.com/patbeagan1/Legion.git")
+            developerConnection.set("scm:git:ssh://git@github.com/patbeagan1/Legion.git")
+        }
+    }
 }
 
 dependencies {
@@ -38,7 +81,7 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> {
-    compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
+    compilerOptions.jvmTarget.set(JvmTarget.JVM_21)
     compilerOptions.freeCompilerArgs.add("-Xcontext-receivers")
 }
 
