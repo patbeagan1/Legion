@@ -5,7 +5,7 @@
 
     <groupId>io.github.patbeagan1</groupId>
     <artifactId>legion</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <name>Legion</name>
     <description>Asynchronous typesafe task graph</description>
     <inceptionYear>2025</inceptionYear>
@@ -201,7 +201,7 @@
         <url>https://github.com/patbeagan1/Legion/</url>
         <connection>scm:git:git://github.com/patbeagan1/Legion.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/patbeagan1/Legion.git</developerConnection>
-        <tag>legion-0.0.2</tag>
+        <tag>legion-0.0.3</tag>
     </scm>
 
     <profiles>
