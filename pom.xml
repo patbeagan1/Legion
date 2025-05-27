@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.patbeagan1</groupId>
     <artifactId>legion</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>Legion</name>
     <description>Asynchronous typesafe task graph</description>
     <inceptionYear>2025</inceptionYear>
@@ -154,10 +155,86 @@
                     <target>21</target>
                 </configuration>
             </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-surefire-plugin</artifactId>-->
+            <!--                <version>3.2.5</version>-->
+            <!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-javadoc-plugin</artifactId>-->
+            <!--                <version>3.10.1</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>attach-javadocs</id>-->
+            <!--                        <goals>-->
+            <!--                            <goal>jar</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
+
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-source-plugin</artifactId>-->
+            <!--                <version>3.3.1</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>attach-sources</id>-->
+            <!--                        <goals>-->
+            <!--                            <goal>jar-no-fork</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
+
+
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.7.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>true</autoPublish>
+                    <waitUntil>published</waitUntil>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                    <goals>deploy</goals>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.2.7</version>
+                <configuration>
+                    <!--                    &lt;!&ndash; Optional: specify which key to use &ndash;&gt;-->
+                    <!--                    <keyname>${gpg.keyname}</keyname>-->
+                    <!-- Prevent gpg from using pinentry programs -->
+                    <gpgArguments>
+                        <arg>--pinentry-mode</arg>
+                        <arg>loopback</arg>
+                    </gpgArguments>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -181,77 +258,18 @@
         <url>https://github.com/patbeagan1/Legion/</url>
         <connection>scm:git:git://github.com/patbeagan1/Legion.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/patbeagan1/Legion.git</developerConnection>
-      <tag>legion-1.2</tag>
-  </scm>
-
-    <distributionManagement>
-        <repository>
-            <id>central</id>
-            <url>http://central</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-    </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>central</id>
-            <url>http://central</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>central</id>
-            <url>http://central</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+        <tag>legion-0.0.1</tag>
+    </scm>
 
     <profiles>
         <profile>
-            <id>release</id>
+            <id>deployment</id>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-release-plugin</artifactId>
-                        <version>2.5.3</version>
-                        <configuration>
-                            <autoVersionSubmodules>true</autoVersionSubmodules>
-                            <useReleaseProfile>false</useReleaseProfile>
-                            <releaseProfiles>release</releaseProfiles>
-                            <goals>deploy</goals>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.sonatype.central</groupId>
-                        <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.7.0</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <publishingServerId>central</publishingServerId>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>2.2.1</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.9.1</version>
+                        <version>3.10.1</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -261,10 +279,33 @@
                             </execution>
                         </executions>
                     </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>3.2.7</version><!-- Check for latest version at Maven Central -->
+                        <configuration>
+                            <!-- Prevent gpg from using pinentry programs -->
+                            <gpgArguments>
+<!--                                <arg>&#45;&#45;no-tty</arg>-->
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -275,59 +316,159 @@
                             </execution>
                         </executions>
                     </plugin>
-<!--                    <plugin>-->
-<!--                        <groupId>org.apache.maven.plugins</groupId>-->
-<!--                        <artifactId>maven-source-plugin</artifactId>-->
-<!--                        <version>3.3.0</version>-->
-<!--                        <executions>-->
-<!--                            <execution>-->
-<!--                                <id>attach-sources</id>-->
-<!--                                <goals>-->
-<!--                                    <goal>jar-no-fork</goal>-->
-<!--                                </goals>-->
-<!--                            </execution>-->
-<!--                        </executions>-->
-<!--                    </plugin>-->
-<!--                    <plugin>-->
-<!--                        <groupId>org.apache.maven.plugins</groupId>-->
-<!--                        <artifactId>maven-javadoc-plugin</artifactId>-->
-<!--                        <version>3.6.3</version>-->
-<!--                        <executions>-->
-<!--                            <execution>-->
-<!--                                <id>attach-javadocs</id>-->
-<!--                                <goals>-->
-<!--                                    <goal>jar</goal>-->
-<!--                                </goals>-->
-<!--                            </execution>-->
-<!--                        </executions>-->
-<!--                    </plugin>-->
-<!--                    <plugin>-->
-<!--                        <groupId>org.apache.maven.plugins</groupId>-->
-<!--                        <artifactId>maven-gpg-plugin</artifactId>-->
-<!--                        <version>3.1.0</version>-->
-<!--                        <executions>-->
-<!--                            <execution>-->
-<!--                                <id>sign-artifacts</id>-->
-<!--                                <phase>verify</phase>-->
-<!--                                <goals>-->
-<!--                                    <goal>sign</goal>-->
-<!--                                </goals>-->
-<!--                            </execution>-->
-<!--                        </executions>-->
-<!--                    </plugin>-->
-<!--                    <plugin>-->
-<!--                        <groupId>org.sonatype.plugins</groupId>-->
-<!--                        <artifactId>nexus-staging-maven-plugin</artifactId>-->
-<!--                        <version>1.6.13</version>-->
-<!--                        <extensions>true</extensions>-->
-<!--                        <configuration>-->
-<!--                            <serverId>ossrh</serverId>-->
-<!--                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>-->
-<!--                            <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
-<!--                        </configuration>-->
-<!--                    </plugin>-->
+
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.6.0</version><!-- Check for latest version at Maven Central -->
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>uploaded</waitUntil>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
     </profiles>
+
+    <!--    <distributionManagement>-->
+    <!--        <repository>-->
+    <!--            <id>central</id>-->
+    <!--            <url>https://repo1.maven.org/maven2</url>-->
+    <!--            <releases><enabled>true</enabled></releases>-->
+    <!--            <snapshots><enabled>true</enabled></snapshots>-->
+    <!--        </repository>-->
+    <!--    </distributionManagement>-->
+
+    <!--    <repositories>-->
+    <!--        <repository>-->
+    <!--            <id>central</id>-->
+    <!--            <url>https://repo1.maven.org/maven2</url>-->
+    <!--            <releases><enabled>true</enabled></releases>-->
+    <!--            <snapshots><enabled>true</enabled></snapshots>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
+    <!--    <pluginRepositories>-->
+    <!--        <pluginRepository>-->
+    <!--            <id>central</id>-->
+    <!--            <url>https://repo1.maven.org/maven2</url>-->
+    <!--            <releases><enabled>true</enabled></releases>-->
+    <!--            <snapshots><enabled>true</enabled></snapshots>-->
+    <!--        </pluginRepository>-->
+    <!--    </pluginRepositories>-->
+
+    <!--    <profiles>-->
+    <!--        <profile>-->
+    <!--            <id>release</id>-->
+    <!--            <build>-->
+    <!--                <plugins>-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-release-plugin</artifactId>-->
+    <!--                        <version>2.5.3</version>-->
+    <!--                        <configuration>-->
+    <!--                            <autoVersionSubmodules>true</autoVersionSubmodules>-->
+    <!--                            <useReleaseProfile>false</useReleaseProfile>-->
+    <!--                            <releaseProfiles>release</releaseProfiles>-->
+    <!--                            <goals>deploy</goals>-->
+    <!--                        </configuration>-->
+    <!--                    </plugin>-->
+
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-source-plugin</artifactId>-->
+    <!--                        <version>2.2.1</version>-->
+    <!--                        <executions>-->
+    <!--                            <execution>-->
+    <!--                                <id>attach-sources</id>-->
+    <!--                                <goals>-->
+    <!--                                    <goal>jar-no-fork</goal>-->
+    <!--                                </goals>-->
+    <!--                            </execution>-->
+    <!--                        </executions>-->
+    <!--                    </plugin>-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-javadoc-plugin</artifactId>-->
+    <!--                        <version>2.9.1</version>-->
+    <!--                        <executions>-->
+    <!--                            <execution>-->
+    <!--                                <id>attach-javadocs</id>-->
+    <!--                                <goals>-->
+    <!--                                    <goal>jar</goal>-->
+    <!--                                </goals>-->
+    <!--                            </execution>-->
+    <!--                        </executions>-->
+    <!--                    </plugin>-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-gpg-plugin</artifactId>-->
+    <!--                        <version>1.5</version>-->
+    <!--                        <executions>-->
+    <!--                            <execution>-->
+    <!--                                <id>sign-artifacts</id>-->
+    <!--                                <phase>verify</phase>-->
+    <!--                                <goals>-->
+    <!--                                    <goal>sign</goal>-->
+    <!--                                </goals>-->
+    <!--                            </execution>-->
+    <!--                        </executions>-->
+    <!--                    </plugin>-->
+    <!--&lt;!&ndash;                    <plugin>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <groupId>org.apache.maven.plugins</groupId>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <artifactId>maven-source-plugin</artifactId>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <version>3.3.0</version>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <executions>&ndash;&gt;-->
+    <!--&lt;!&ndash;                            <execution>&ndash;&gt;-->
+    <!--&lt;!&ndash;                                <id>attach-sources</id>&ndash;&gt;-->
+    <!--&lt;!&ndash;                                <goals>&ndash;&gt;-->
+    <!--&lt;!&ndash;                                    <goal>jar-no-fork</goal>&ndash;&gt;-->
+    <!--&lt;!&ndash;                                </goals>&ndash;&gt;-->
+    <!--&lt;!&ndash;                            </execution>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        </executions>&ndash;&gt;-->
+    <!--&lt;!&ndash;                    </plugin>&ndash;&gt;-->
+    <!--&lt;!&ndash;                    <plugin>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <groupId>org.apache.maven.plugins</groupId>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <artifactId>maven-javadoc-plugin</artifactId>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <version>3.6.3</version>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <executions>&ndash;&gt;-->
+    <!--&lt;!&ndash;                            <execution>&ndash;&gt;-->
+    <!--&lt;!&ndash;                                <id>attach-javadocs</id>&ndash;&gt;-->
+    <!--&lt;!&ndash;                                <goals>&ndash;&gt;-->
+    <!--&lt;!&ndash;                                    <goal>jar</goal>&ndash;&gt;-->
+    <!--&lt;!&ndash;                                </goals>&ndash;&gt;-->
+    <!--&lt;!&ndash;                            </execution>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        </executions>&ndash;&gt;-->
+    <!--&lt;!&ndash;                    </plugin>&ndash;&gt;-->
+    <!--&lt;!&ndash;                    <plugin>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <groupId>org.apache.maven.plugins</groupId>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <artifactId>maven-gpg-plugin</artifactId>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <version>3.1.0</version>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <executions>&ndash;&gt;-->
+    <!--&lt;!&ndash;                            <execution>&ndash;&gt;-->
+    <!--&lt;!&ndash;                                <id>sign-artifacts</id>&ndash;&gt;-->
+    <!--&lt;!&ndash;                                <phase>verify</phase>&ndash;&gt;-->
+    <!--&lt;!&ndash;                                <goals>&ndash;&gt;-->
+    <!--&lt;!&ndash;                                    <goal>sign</goal>&ndash;&gt;-->
+    <!--&lt;!&ndash;                                </goals>&ndash;&gt;-->
+    <!--&lt;!&ndash;                            </execution>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        </executions>&ndash;&gt;-->
+    <!--&lt;!&ndash;                    </plugin>&ndash;&gt;-->
+    <!--&lt;!&ndash;                    <plugin>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <groupId>org.sonatype.plugins</groupId>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <artifactId>nexus-staging-maven-plugin</artifactId>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <version>1.6.13</version>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <extensions>true</extensions>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        <configuration>&ndash;&gt;-->
+    <!--&lt;!&ndash;                            <serverId>ossrh</serverId>&ndash;&gt;-->
+    <!--&lt;!&ndash;                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>&ndash;&gt;-->
+    <!--&lt;!&ndash;                            <autoReleaseAfterClose>true</autoReleaseAfterClose>&ndash;&gt;-->
+    <!--&lt;!&ndash;                        </configuration>&ndash;&gt;-->
+    <!--&lt;!&ndash;                    </plugin>&ndash;&gt;-->
+    <!--                </plugins>-->
+    <!--            </build>-->
+    <!--        </profile>-->
+    <!--    </profiles>-->
 </project>

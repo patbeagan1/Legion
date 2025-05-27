@@ -9,7 +9,7 @@ plugins {
     id("com.vanniktech.maven.publish") version "0.32.0"
 }
 
-group = "dev.patbeagan1"
+group = "io.github.patbeagan1"
 version = "1.0-SNAPSHOT"
 
 repositories {
