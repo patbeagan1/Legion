@@ -17,7 +17,7 @@ repositories {
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(17)
 }
 
 mavenPublishing {
@@ -81,7 +81,7 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> {
-    compilerOptions.jvmTarget.set(JvmTarget.JVM_21)
+    compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
     compilerOptions.freeCompilerArgs.add("-Xcontext-receivers")
 }
 
