@@ -5,7 +5,11 @@ import io.github.patbeagan1.legion.visualization.LinkCollection
 import kotlinx.coroutines.*
 import java.util.UUID
 
-
+/**
+ * The base interface for an imp.
+ *
+ * An imp is a short word for an asynchronous worker in the graph.
+ */
 interface ImpNode<EventIn, EventOut> : Acceptor<EventIn> {
     fun <EventOther> LegionScope<*>.link(c: ImpNode<EventOut, EventOther>): ImpNode<EventOut, EventOther>
 
