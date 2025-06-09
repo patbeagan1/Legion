@@ -10,9 +10,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.util.UUID
 
-@JvmInline
-value class Quantity<T>(val value: Int)
-
 inline fun <EIn : Any,
         reified T1 : EIn,
         reified T2 : EIn,

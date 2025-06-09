@@ -70,6 +70,7 @@ interface ImpNode<EventIn, EventOut> : Acceptor<EventIn> {
             val threadName = Thread.currentThread().name
             legionScope.eventStream.emit(LifecycleEvent.Running(name, threadName))
             action(e).let {
+                yield()
                 links.forEach { link ->
                     legionScope.eventStream.emit(
                         LifecycleEvent.Transmitting(

@@ -1,5 +1,8 @@
 package io.github.patbeagan1.legion
 
+/**
+ * Represents events that occur during the lifecycle of nodes in the Legion processing graph.
+ */
 sealed class LifecycleEvent {
     abstract val name: String
     abstract val timeStamp: Long

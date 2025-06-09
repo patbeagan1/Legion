@@ -1,7 +1,8 @@
 package io.github.patbeagan1.legion
 
 import io.github.patbeagan1.legion.ChanTest.Item.*
-import io.github.patbeagan1.legion.ImpNode.*
+import io.github.patbeagan1.legion.ImpNode.BaseImp
+import io.github.patbeagan1.legion.ImpNode.Imp
 import io.github.patbeagan1.legion.Ingredient.*
 import io.github.patbeagan1.legion.LegionScope.DebugLevel.ERROR
 import io.github.patbeagan1.legion.LegionScope.DebugLevel.INFO
@@ -13,11 +14,14 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.test.runTest
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.random.Random
 import kotlin.system.measureNanoTime
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.time.Duration.Companion.seconds
 
@@ -921,45 +925,48 @@ class ChanTest {
 
     class FailedImpException() : Exception()
 
-//    @Test
-//    fun `test splitter works correctly`() = runBlocking {
-//        // Given
-//        val inputString = "test"
-//        val outputChars = mutableListOf<Char>()
-//        val outputFinal = mutableListOf<String>()
-//        val results = MutableSharedFlow<String>()
-//
-//        val legion = legion<String> {
-//            start..cohort("test") {
-//                startCohort..{ println(it) }..endCohort
-//            }..{}
-//            start..{
-//                it.toCharArray().toList()
-//            }..splitter {
-//                startSplitter..{
-//                    outputChars.add(it)
-//                    it
-//                }..endSplitter
-//            }..{
-//                val result = it.joinToString("")
-//                outputFinal.add(result)
-//                results.emit(result)
-//            }
-//        }.also { println(it.asGraphviz()) }
-//
-//        // When
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `test splitter works correctly`() {
+        // Given
+        val inputString = "test"
+        val outputChars = mutableListOf<Char>()
+        val outputFinal = mutableListOf<String>()
+        val results = MutableSharedFlow<String>()
+
+        val legion = legion<String>(scope = CoroutineScope(Dispatchers.IO)) {
+            start..cohort("test") {
+                startCohort..{ println(it) }..endCohort
+            }..{}
+
+            start..{
+                it.toCharArray().toList()
+            }..splitter {
+                startSplitter..{
+                    outputChars.add(it)
+                    it
+                }..endSplitter
+            }..{
+                val result = it.joinToString("")
+                outputFinal.add(result)
+                result
+            }..sink(results)
+        }.also { println(it.asGraphviz()) }
+
+        // When
 //        startLegionWithTimeout(legion, inputString, dispatcher = Dispatchers.IO)
-//
-//        // Then
-//        results.collect {
-//            assertEquals(listOf('e', 's', 't', 't'), outputChars.apply { sort() })
-//            assertEquals(listOf("estt"), outputFinal)
-//            assertEquals(inputString.length, outputChars.size)
-//            assertEquals(1, outputFinal.size)
-//            assertEquals(inputString, outputFinal.first())
-//        }
-//        Unit
-//    }
+
+        runTest {
+            legion.accept(inputString)
+            delay(2000)
+        }
+
+        assertEquals(listOf('e', 's', 't', 't').groupBy { it }, outputChars.groupBy { it })
+        assertEquals(listOf("estt"), outputFinal.map { it.toList().sorted().joinToString("") })
+        assertEquals(inputString.length, outputChars.size)
+        assertEquals(1, outputFinal.size)
+        println("done")
+    }
 
     @Test
     fun `cohort catches exceptions`() {
@@ -1087,18 +1094,28 @@ class ChanTest {
 
         j.cancel()
     }
+
+    @Test
+    fun `testing sinks work`() {
+        val s = MutableSharedFlow<Int>()
+
+        val legion = legion<String> {
+            val sink = sink(s)
+            start..{ it.count() }..sink
+            start..{ 3 }..sink
+        }
+
+        runBlocking {
+            val jobs = buildList {
+                add(launch { s.collect { println(it) } })
+                add(launch { legion.accept("test") })
+            }
+            delay(1_000)
+            jobs.forEach { it.cancel() }
+        }
+    }
 }
 
 data class Message2(val value: Int) : LegionScope.Message
 data class Message1(val value: Int) : LegionScope.Message
 
-// todo persistence, so that restarting the program can resume tasks
-// todo allowing for cohort-style legions, which have a single result
-// todo coordinated rate limiting - closure of a semaphore
-// todo cancel a path if it is no longer needed - first past the post
-// todo event handling
-// todo signal handling
-// todo retry and failure logic on a per imp basis
-// todo migrate into new repo
-// todo fix so we don't need to pass nullability types down the chain, since null is a drop operation
-// todo visualization - cohorts as clusters

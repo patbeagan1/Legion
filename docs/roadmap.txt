@@ -1,0 +1,15 @@
+## Won't do
+// todo allowing for cohort-style legions, which have a single result - covered by sinks
+
+## Done
+// todo migrate into new repo
+// todo visualization - cohorts as clusters
+// todo cancel a path if it is no longer needed - first past the post
+
+## TODO
+// todo persistence, so that restarting the program can resume tasks
+// todo coordinated rate limiting - closure of a semaphore
+// todo signal handling
+// todo event handling
+// todo retry and failure logic on a per imp basis
+// todo fix so we don't need to pass nullability types down the chain, since null is a drop operation
