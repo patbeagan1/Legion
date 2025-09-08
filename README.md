@@ -5,6 +5,7 @@
 
 Legion is a powerful Kotlin library for building and executing asynchronous, type-safe task graphs. It's inspired by the principles of Flow-Based Programming (FBP), allowing you to define complex workflows as a network of independent, reusable processing nodes.
 
+
 ## A Primer on Flow-Based Programming
 
 Flow-Based Programming (FBP) is a paradigm where an application is viewed as a network of black-box processes. These processes, or nodes, communicate by passing structured data packets through predefined connections. This approach encourages breaking down complex problems into smaller, manageable, and decoupled components.
