@@ -1,0 +1,53 @@
+name: Legion
+description: A comprehensive project management and analysis tool with advanced features for code analysis, project tracking, and development workflow optimization.
+language: kotlin
+tags:
+  - kotlin
+  - project-management
+  - code-analysis
+  - cli
+  - development-tools
+  - workflow-optimization
+
+release_branch: develop
+has_release_script: true
+release_repo: patbeagan1/Legion
+
+subtree:
+  repo: git@github.com:patbeagan1/Legion.git
+  prefix: Legion
+  branch: develop
+
+scripts:
+  build:
+    command: ./gradlew build
+  test:
+    command: ./gradlew test
+  run:
+    command: ./gradlew run
+
+roadmap:
+  todo:
+    - Add support for additional programming languages in code analysis
+    - Implement advanced project metrics and visualizations
+    - Integrate with CI/CD pipelines for automated analysis
+    - Provide a plugin system for custom analysis rules
+    - Export results in multiple formats (JSON, HTML, Markdown)
+    - Add real-time project monitoring and alerts
+    - Implement collaborative features for team project management
+
+  in_progress:
+    - Refactor analysis engine for better performance
+    - Improve CLI usability and documentation
+    - Add better examples and documentation
+
+  done:
+    - Initial Kotlin code analysis implemented
+    - Basic CLI interface for running analysis
+    - Project structure and build scripts set up
+    - Core project management functionality
+    - Basic workflow optimization features
+
+related_projects:
+  - CodeAtlas
+  - monorepo-cli
