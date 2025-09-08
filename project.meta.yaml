@@ -1,0 +1,72 @@
+name: Legion
+description: |
+  Legion is a powerful Kotlin library for building and executing asynchronous, type-safe task graphs. 
+  Inspired by Flow-Based Programming (FBP), Legion enables you to define complex workflows as 
+  a network of independent, reusable processing nodes. It emphasizes type safety, 
+  asynchronicity with coroutines, and a flexible DSL for graph definition. 
+  Legion supports advanced features such as forks, joins, stateful nodes, 
+  control flow, inter-node communication, CLI integration, and graph visualization.
+language: kotlin
+tags:
+  - kotlin
+  - library
+  - task-graph
+  - flow-based-programming
+  - asynchronous
+  - typesafe
+  - dsl
+  - cli
+  - workflow
+  - graphviz
+  - coroutines
+
+release_branch: develop
+has_release_script: true
+release_repo: patbeagan1/Legion
+
+subtree:
+  repo: git@github.com:patbeagan1/Legion.git
+  prefix: Legion
+  branch: develop
+
+scripts:
+  build:
+    command: ./gradlew build
+  test:
+    command: ./gradlew test
+  run:
+    command: ./gradlew run
+
+roadmap:
+  todo:
+    - Add support for additional programming languages in code analysis
+    - Implement advanced project metrics and visualizations
+    - Integrate with CI/CD pipelines for automated analysis
+    - Provide a plugin system for custom analysis rules
+    - Export results in multiple formats (JSON, HTML, Markdown)
+    - Add real-time project monitoring and alerts
+    - Implement collaborative features for team project management
+    - Enhance Graphviz visualization and export options
+    - Add more built-in node types (e.g., debounce, throttle, batch)
+    - Improve error handling and reporting
+    - Support for distributed/remote execution of graphs
+
+  in_progress:
+    - Refactor analysis engine for better performance
+    - Improve CLI usability and documentation
+    - Add better examples and documentation
+
+  done:
+    - Initial Kotlin code analysis implemented
+    - Basic CLI interface for running analysis
+    - Project structure and build scripts set up
+    - Core project management functionality
+    - Basic workflow optimization features
+    - Graphviz DOT export for task graphs
+    - Support for forks, joins, and advanced control flow
+    - Memoization and rate limiting nodes
+    - Inter-node communication primitives
+
+related_projects:
+  - CodeAtlas
+  - monorepo-cli
