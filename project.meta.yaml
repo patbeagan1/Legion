@@ -1,13 +1,24 @@
 name: Legion
-description: A comprehensive project management and analysis tool with advanced features for code analysis, project tracking, and development workflow optimization.
+description: |
+  Legion is a powerful Kotlin library for building and executing asynchronous, type-safe task graphs. 
+  Inspired by Flow-Based Programming (FBP), Legion enables you to define complex workflows as 
+  a network of independent, reusable processing nodes. It emphasizes type safety, 
+  asynchronicity with coroutines, and a flexible DSL for graph definition. 
+  Legion supports advanced features such as forks, joins, stateful nodes, 
+  control flow, inter-node communication, CLI integration, and graph visualization.
 language: kotlin
 tags:
   - kotlin
-  - project-management
-  - code-analysis
+  - library
+  - task-graph
+  - flow-based-programming
+  - asynchronous
+  - typesafe
+  - dsl
   - cli
-  - development-tools
-  - workflow-optimization
+  - workflow
+  - graphviz
+  - coroutines
 
 release_branch: develop
 has_release_script: true
@@ -35,6 +46,10 @@ roadmap:
     - Export results in multiple formats (JSON, HTML, Markdown)
     - Add real-time project monitoring and alerts
     - Implement collaborative features for team project management
+    - Enhance Graphviz visualization and export options
+    - Add more built-in node types (e.g., debounce, throttle, batch)
+    - Improve error handling and reporting
+    - Support for distributed/remote execution of graphs
 
   in_progress:
     - Refactor analysis engine for better performance
@@ -47,6 +62,10 @@ roadmap:
     - Project structure and build scripts set up
     - Core project management functionality
     - Basic workflow optimization features
+    - Graphviz DOT export for task graphs
+    - Support for forks, joins, and advanced control flow
+    - Memoization and rate limiting nodes
+    - Inter-node communication primitives
 
 related_projects:
   - CodeAtlas
